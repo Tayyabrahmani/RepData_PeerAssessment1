@@ -7,6 +7,7 @@ output:
 
 
 ## Loading and preprocessing the data
+```r 
 library(dplyr)
 library(ggplot2)
 
@@ -14,7 +15,7 @@ activity = read.csv('activity.csv')
 activity$date = as.Date(as.character(activity$date), format = '%Y-%m-%d')
 activity$day = weekdays(activity$date)
 act_clean = activity[!is.na(activity$steps), ]
-
+```
 
 ## What is mean total number of steps taken per day?
 total_steps_per_day = act_clean %>% group_by(date) %>% summarise(step = sum(steps))
@@ -52,4 +53,5 @@ as.integer(median(total_steps_per_day1$step))
 new$Category = factor(ifelse(new$day %in% c('Saturday','Sunday'), 'Weekend', 'Weekday'))
 average_step = new %>% group_by(interval, Category) %>% summarise(step = mean(steps))
 ggplot(average_step, aes(x = interval, y = step)) + geom_line(col = 'blue') + ggtitle('Average Steps per Interval Based on Type of Day') + ylab('Average Number of Steps') + xlab('Interval') + facet_grid(~Category)
+
 
