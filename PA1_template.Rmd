@@ -18,19 +18,22 @@ act_clean = activity[!is.na(activity$steps), ]
 ```
 
 ## What is mean total number of steps taken per day?
+```r
 total_steps_per_day = act_clean %>% group_by(date) %>% summarise(step = sum(steps))
 ggplot(total_steps_per_day, aes(x = step)) + geom_histogram(col = 'black',fill = 'blue') + ggtitle('Total Steps per Day') + xlab('Steps') + ylab('Frequency') + ylim(0,10)
 as.integer(mean(total_steps_per_day$step))
 as.integer(median(total_steps_per_day$step))
+```
 
 ## What is the average daily activity pattern?
+```r
 steps_interval = act_clean %>% group_by(interval) %>% summarise(step = sum(steps))
 ggplot(steps_interval, aes(x = interval, y = step)) + geom_line(col = 'black') + ggtitle('Average Number of Steps per Interval') + ylab('Average Number of Steps') + xlab('Interval')
 steps_interval[which.max(steps_interval$step),]$interval
-
-
+```
 
 ## Imputing missing values
+```r
 sum(is.na(activity$steps))
 x = act_clean %>% group_by(interval) %>% summarise(step = as.integer(mean(steps)))
 y = activity[is.na(activity$steps),]
@@ -46,12 +49,12 @@ total_steps_per_day1 = new %>% group_by(date) %>% summarise(step = sum(steps))
 ggplot(total_steps_per_day1, aes(x = step)) + geom_histogram(col = 'black',fill = 'blue') + ggtitle('Total Steps per Day') + xlab('Steps') + ylab('Frequency') + ylim(0,10)
 as.integer(mean(total_steps_per_day1$step))
 as.integer(median(total_steps_per_day1$step))
-
-
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
+```r
 new$Category = factor(ifelse(new$day %in% c('Saturday','Sunday'), 'Weekend', 'Weekday'))
 average_step = new %>% group_by(interval, Category) %>% summarise(step = mean(steps))
 ggplot(average_step, aes(x = interval, y = step)) + geom_line(col = 'blue') + ggtitle('Average Steps per Interval Based on Type of Day') + ylab('Average Number of Steps') + xlab('Interval') + facet_grid(~Category)
-
+```
 
